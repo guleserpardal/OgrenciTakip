@@ -90,7 +90,7 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:#8a7d9c}
         <span class="label">Öğretmene gönderilecek çıktı</span><h2>Haftalık evde eğitim raporu</h2>
         <p style="margin:4px 0;color:#6f6f91">Rapor otomatik olarak bu haftanın işaretlemelerinden hazırlanır. Yazdır ekranından <b>PDF olarak kaydet</b> seçeneğini kullanabilirsin.</p>
         <label style="display:block;font-weight:800;margin-top:10px">Öğretmene kısa not<textarea id="reportNoteInput" rows="3" placeholder="Örn. A sesinde ilerledik, satır takibinde biraz daha çalışacağız."></textarea></label>
-        <div class="report-actions"><button id="saveReportNote" class="btn secondary">Notu kaydet</button><button id="printReport" class="btn">🖨️ Yazdır / PDF kaydet</button></div>
+        <div class="report-actions"><button id="saveReportNote" class="btn secondary">Notu kaydet</button><button id="printReport" class="btn">🖨️ Yazdır / PDF kaydet</button><button id="exportLegacy" class="btn secondary">📦 Kayıtları dışa aktar (Android uygulamasına)</button></div>
       </section>
       <section id="reportSheet" class="report-sheet"></section>
     </section>
@@ -168,6 +168,26 @@ $('#saveCareNote').onclick=()=>{const d=load();d.careNote[selectedChild]=$('#car
 $('#saveParentNote').onclick=()=>{const d=load();d.parentNote=$('#parentNote').value.trim();save(d);alert('Anne notu kaydedildi 🧡');renderReport(d)};
 $('#saveReportNote').onclick=()=>{const d=load();d.reportNote=$('#reportNoteInput').value.trim();save(d);renderReport(d);alert('Rapor notu kaydedildi 📄')};
 $('#printReport').onclick=()=>{const d=load();d.reportNote=$('#reportNoteInput').value.trim();save(d);renderReport(d);setTimeout(()=>window.print(),120)};
+// Android uygulamasina tasimak icin: bu tarayicida saklanan TUM haftalari
+// tek bir JSON dosyasi olarak indirir. Uygulamada Ayarlar > Yedegi Geri Yukle
+// ile secildiginde kayitlar cocuk profillerine donusturulur.
+$('#exportLegacy').onclick=()=>{
+  const prefix='odevTakip:v1:',legacyWeeks={};
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k||!k.startsWith(prefix))continue;
+    try{const v=JSON.parse(localStorage.getItem(k));if(v&&typeof v==='object')legacyWeeks[k.slice(prefix.length)]=v}catch{}
+  }
+  const weeks=Object.keys(legacyWeeks).length;
+  if(!weeks){alert('Bu tarayıcıda kayıtlı hafta bulunamadı.');return}
+  const payload={app:'Evde Eğitim Takip',legacyVersion:1,exportedAt:new Date().toISOString(),legacyWeeks};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=`EvdeEgitimTakip_EskiKayitlar_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  alert(`${weeks} hafta dışa aktarıldı.\n\nDosyayı telefonunuza kopyalayıp uygulamada\nAyarlar → Yedeği Geri Yükle ile açın.`);
+};
 $('#addTask').onclick=()=>{const title=prompt('Yeni ödev görevi adı:');if(!title)return;const desc=prompt('Kısa açıklama:')||'';const icon=prompt('Emoji seç (örn. 🧩):')||'⭐';const d=load();d.tasks.push({id:'custom_'+Date.now(),title,desc,icon});save(d);render()};
 render();
 </script>

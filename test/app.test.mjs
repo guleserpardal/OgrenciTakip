@@ -493,6 +493,78 @@ ok('Migration bir kez calisiyor, veriyi cogaltmiyor',
 await migrationPage.close();
 await migContext.close();
 
+/* ------------------- 18b. eski HTML surumunden disa aktarilan dokumu alma --- */
+// Telefona yeni kurulan uygulamada tarayicinin localStorage'i bulunmadigindan
+// otomatik migration calismaz; eski dosyadan alinan dokum bu yolla aktarilir.
+const legacyCtx = await browser.newContext({
+  viewport: { width: 412, height: 915 }, isMobile: true, hasTouch: true,
+  locale: 'tr-TR', timezoneId: 'Europe/Istanbul',
+});
+const legacyPage = await legacyCtx.newPage();
+legacyPage.on('pageerror', (e) => errors.push(`legacy pageerror: ${e.message}`));
+await legacyPage.goto(BASE, { waitUntil: 'networkidle' });
+await legacyPage.waitForSelector('#onboarding:not([hidden])');
+await legacyPage.fill('#onboarding input[type=text]', 'Deniz');
+await legacyPage.click('#onboarding button[type=submit]');
+await legacyPage.waitForSelector('#app:not([hidden])');
+
+const legacyImport = await legacyPage.evaluate(async () => {
+  const s = window.EvdeEgitim.store;
+  const dump = {
+    app: 'Evde Eğitim Takip',
+    legacyVersion: 1,
+    exportedAt: new Date().toISOString(),
+    legacyWeeks: {
+      '2026-08-31': {
+        sound: 'A a',
+        done: { Elis: { 'read:0': true, 'math:1': true }, Lila: { 'write:2': true } },
+        careDone: { Elis: { 'teeth_am:0': true }, Lila: {} },
+        reflection: { Elis: { fav: 'boyama', hard: 'kesme', stars: 3 }, Lila: { fav: '', hard: '', stars: 0 } },
+        careNote: { Elis: 'Eski not', Lila: '' },
+        parentNote: 'Eski anne notu',
+        reportNote: '',
+      },
+    },
+  };
+  const before = s.allChildren().length;
+  const res = await s.importLegacyDump(dump);
+  return {
+    detected: s.isLegacyDump(dump),
+    before,
+    after: s.allChildren().length,
+    names: s.allChildren().map((c) => c.name),
+    weeks: res.weeks,
+    elisDone: (() => {
+      const elis = s.allChildren().find((c) => c.name === 'Elis');
+      return elis ? s.readChildWeek('2026-08-31', elis.id).done : null;
+    })(),
+    denizUntouched: (() => {
+      const deniz = s.allChildren().find((c) => c.name === 'Deniz');
+      return deniz ? Object.keys(s.readChildWeek('2026-08-31', deniz.id).done).length === 0 : false;
+    })(),
+  };
+});
+ok('Eski surum dokumu taninip aktariliyor',
+  legacyImport.detected && legacyImport.weeks === 1, JSON.stringify({ d: legacyImport.detected, w: legacyImport.weeks }));
+ok('Dokumdaki cocuklar mevcut profillerin yanina ekleniyor',
+  legacyImport.before === 1 && legacyImport.after === 3
+  && legacyImport.names.includes('Elis') && legacyImport.names.includes('Lila')
+  && legacyImport.names.includes('Deniz'), JSON.stringify(legacyImport.names));
+ok('Dokumdaki isaretlemeler dogru cocuga gidiyor',
+  legacyImport.elisDone?.['read:0'] === true && legacyImport.elisDone?.['math:1'] === true
+  && !legacyImport.elisDone?.['write:2'], JSON.stringify(legacyImport.elisDone));
+ok('Mevcut profilin verisine dokunulmuyor', legacyImport.denizUntouched);
+
+await legacyPage.reload({ waitUntil: 'networkidle' });
+await legacyPage.waitForSelector('#app:not([hidden])');
+ok('Aktarilan eski kayitlar yeniden acilista duruyor',
+  await legacyPage.evaluate(() => {
+    const s = window.EvdeEgitim.store;
+    return s.allChildren().length === 3 && !!s.getState().weeks['2026-08-31'];
+  }));
+await legacyPage.close();
+await legacyCtx.close();
+
 /* ------------------------------------------------ 19. layout / responsive */
 const overflow = await page.evaluate(() => ({
   doc: document.documentElement.scrollWidth,

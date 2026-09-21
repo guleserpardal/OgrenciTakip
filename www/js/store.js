@@ -120,22 +120,13 @@ function legacyWeekKeys() {
   return keys.sort();
 }
 
-/**
- * Eski tek dosyali surumun localStorage kayitlarini v2 semasina tasir.
- * Cocuk adlari veriden kesfedilir, kod icinde sabit tutulmaz.
- */
-function migrateLegacy(target) {
-  const keys = legacyWeekKeys();
-  if (!keys.length) return { migrated: false, weeks: 0, children: [] };
-
+/** Ham v1 hafta kayitlarini [weekKey, data] ciftlerine ve cocuk adlarina ayristirir. */
+function parseLegacyEntries(rawWeeks) {
   const parsed = [];
   const names = [];
-  for (const key of keys) {
-    let data;
-    try { data = JSON.parse(localStorage.getItem(key)); } catch { continue; }
-    if (!data || typeof data !== 'object') continue;
-    const weekKey = key.slice(LEGACY_PREFIX.length);
+  for (const [weekKey, data] of Object.entries(rawWeeks || {})) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(weekKey)) continue;
+    if (!data || typeof data !== 'object') continue;
     parsed.push([weekKey, data]);
     for (const bucket of [data.done, data.careDone, data.reflection, data.careNote]) {
       if (bucket && typeof bucket === 'object') {
@@ -145,6 +136,28 @@ function migrateLegacy(target) {
       }
     }
   }
+  parsed.sort((a, b) => (a[0] < b[0] ? -1 : 1));
+  return { parsed, names };
+}
+
+/** Eski surumun localStorage kayitlarini toplar. */
+function readLegacyFromLocalStorage() {
+  const out = {};
+  for (const key of legacyWeekKeys()) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data && typeof data === 'object') out[key.slice(LEGACY_PREFIX.length)] = data;
+    } catch { /* bozuk kayit atlanir */ }
+  }
+  return out;
+}
+
+/**
+ * v1 hafta kayitlarini v2 semasina tasir.
+ * Cocuk adlari veriden kesfedilir, kod icinde sabit tutulmaz.
+ */
+function applyLegacyWeeks(target, rawWeeks) {
+  const { parsed, names } = parseLegacyEntries(rawWeeks);
   if (!parsed.length) return { migrated: false, weeks: 0, children: [] };
   if (!names.length) names.push('Çocuk 1');
 
@@ -217,6 +230,27 @@ function migrateLegacy(target) {
   target.migratedFrom = 'odevTakip:v1';
   target.migratedAt = new Date().toISOString();
   return { migrated: true, weeks: weekCount, children: names };
+}
+
+/**
+ * Eski HTML surumunden disa aktarilmis v1 dokumunu mevcut veriye ekler.
+ * Ayni ada sahip profil varsa yeniden kullanilir, yenisi olusturulmaz.
+ */
+export async function importLegacyDump(dump) {
+  const rawWeeks = dump?.legacyWeeks && typeof dump.legacyWeeks === 'object' ? dump.legacyWeeks : null;
+  if (!rawWeeks) throw new Error('Bu dosya eski sürümün yedeği gibi görünmüyor.');
+  const result = applyLegacyWeeks(state, rawWeeks);
+  if (!result.migrated) throw new Error('Yedekte taşınacak hafta kaydı bulunamadı.');
+  if (!state.activeChildId) state.activeChildId = activeChildren()[0]?.id || null;
+  await saveNow();
+  return result;
+}
+
+/** Bir dosyanin eski (v1) surum dokumu olup olmadigini soyler. */
+export function isLegacyDump(payload) {
+  return !!(payload && typeof payload === 'object'
+    && payload.legacyVersion === 1
+    && payload.legacyWeeks && typeof payload.legacyWeeks === 'object');
 }
 
 /* ---------------------------------------------------------- normalize --- */
@@ -307,7 +341,7 @@ export async function initStore() {
   let migration = { migrated: false };
   // Migration yalnizca daha once yapilmadiysa ve v2 verisi bossa denenir.
   if (!state.migratedFrom && !Object.keys(state.weeks).length) {
-    migration = migrateLegacy(state);
+    migration = applyLegacyWeeks(state, readLegacyFromLocalStorage());
     if (migration.migrated) await writeRaw(JSON.stringify(state));
   }
   return { state, migration };

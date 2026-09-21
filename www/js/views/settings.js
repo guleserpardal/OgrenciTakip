@@ -31,13 +31,29 @@ function parseBackup(text) {
   } catch {
     throw new Error('Dosya geçerli bir JSON değil.');
   }
+
+  // Eski tek dosyali HTML surumunden disa aktarilmis dokum.
+  if (store.isLegacyDump(payload)) {
+    const weeks = Object.keys(payload.legacyWeeks).length;
+    const names = new Set();
+    for (const week of Object.values(payload.legacyWeeks)) {
+      for (const bucket of [week?.done, week?.careDone, week?.reflection, week?.careNote]) {
+        if (bucket && typeof bucket === 'object') for (const n of Object.keys(bucket)) names.add(n);
+      }
+    }
+    return {
+      payload, legacy: true, childCount: names.size, weekCount: weeks,
+      exportedAt: payload.exportedAt || null,
+    };
+  }
+
   const data = payload?.data ?? payload;
   if (!data || typeof data !== 'object' || (!data.children && !data.weeks)) {
     throw new Error('Bu dosya Evde Eğitim Takip yedeği gibi görünmüyor.');
   }
   const childCount = Object.keys(data.children || {}).length;
   const weekCount = Object.keys(data.weeks || {}).length;
-  return { payload, childCount, weekCount, exportedAt: payload?.exportedAt || null };
+  return { payload, legacy: false, childCount, weekCount, exportedAt: payload?.exportedAt || null };
 }
 
 export async function openRestoreDialog(ctx) {
@@ -53,6 +69,7 @@ export async function openRestoreDialog(ctx) {
         loaded = parseBackup(text);
         err.textContent = '';
         status.textContent = `${sourceLabel}: ${loaded.childCount} çocuk, ${loaded.weekCount} hafta`
+          + (loaded.legacy ? ' • eski sürüm yedeği' : '')
           + (loaded.exportedAt ? ` • ${fmtDate(new Date(loaded.exportedAt))}` : '');
       } catch (e) {
         loaded = null;
@@ -77,11 +94,12 @@ export async function openRestoreDialog(ctx) {
 
     const go = (mode) => {
       if (!loaded) { err.textContent = 'Önce bir yedek seçin veya yapıştırın.'; return; }
-      close({ ...loaded, mode });
+      // Eski surum dokumu her zaman mevcut veriye eklenir.
+      close({ ...loaded, mode: loaded.legacy ? 'legacy' : mode });
     };
 
     return el('div', { class: 'modal-body' }, [
-      el('p', { class: 'modal-message', text: 'Daha önce dışa aktardığınız JSON yedeğini seçin.' }),
+      el('p', { class: 'modal-message', text: 'Daha önce dışa aktardığınız JSON yedeğini seçin. Eski tek dosyalık HTML sürümünden alınan yedek de kabul edilir.' }),
       fileInput,
       el('button', { class: 'btn block secondary', type: 'button', text: '📂 Yedek dosyası seç', onclick: () => fileInput.click() }),
       el('div', { class: 'modal-divider' }),
@@ -104,6 +122,27 @@ export async function openRestoreDialog(ctx) {
   const current = store.getState();
   const currentChildren = Object.keys(current?.children || {}).length;
   const currentWeeks = Object.keys(current?.weeks || {}).length;
+
+  if (picked.mode === 'legacy') {
+    const ok = await confirmDialog({
+      title: 'Eski sürüm kayıtları alınsın mı?',
+      message: `Eski HTML sürümünden ${picked.weekCount} hafta ve ${picked.childCount} çocuk aktarılacak.\n\n`
+        + 'Bulunan çocuk adları için profil yoksa yenisi oluşturulur, varsa mevcut profile eklenir. '
+        + 'Şu anki kayıtlarınız silinmez.',
+      confirmText: 'Aktar',
+    });
+    if (!ok) return false;
+    try {
+      const res = await store.importLegacyDump(picked.payload);
+      toast(`Eski kayıtlar aktarıldı: ${res.weeks} hafta, ${res.children.length} çocuk ✅`);
+      ctx.refresh();
+      return true;
+    } catch (e) {
+      console.error(e);
+      toast(`Aktarım başarısız: ${e?.message || e}`, 'error');
+      return false;
+    }
+  }
 
   const message = picked.mode === 'replace'
     ? `Yedekteki ${picked.childCount} çocuk ve ${picked.weekCount} hafta yüklenecek.\n\n`

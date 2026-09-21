@@ -200,6 +200,20 @@ adları (ör. Elis, Lila) **veriden keşfedilerek** ayrı profillere dönüştü
 tüm haftalar, işaretlemeler, değerlendirmeler ve notlar taşınır. İşlem
 `migratedFrom` ile işaretlenir ve **bir daha çalışmaz**; veri çoğalmaz.
 
+**Telefona yeni kurulumda** bu otomatik taşıma çalışmaz: eski kayıtlar
+`odev_takip_tek_dosya.html` dosyasını açtığınız **tarayıcının** deposundadır,
+uygulamanın deposunda değil. Geçmişi taşımak için:
+
+1. `legacy/odev_takip_tek_dosya.html` dosyasını eskiden kullandığınız
+   bilgisayar/tarayıcıda açın.
+2. Öğretmen raporu sekmesindeki **📦 Kayıtları dışa aktar** düğmesine basın —
+   bütün haftalar tek bir JSON dosyasına iner.
+3. Dosyayı telefona kopyalayın, uygulamada **⚙️ Ayarlar → 📥 Yedeği Geri Yükle**
+   ile seçin.
+
+Uygulama bu dosyayı tanır, çocuk adlarını profillere dönüştürür ve kayıtları
+mevcut verinin **yanına ekler** — hiçbir şey silinmez.
+
 ---
 
 ## 5. Öne çıkan davranışlar
@@ -244,12 +258,13 @@ Sistemde hazır bir Chromium varsa `CHROMIUM_PATH` ile gösterebilirsiniz.
 
 İki takım test vardır ve her ikisi de CI'da APK derlemesinden **önce** çalışır:
 
-**`test/app.test.mjs` — 76 senaryo** (412×915 ekran, Galaxy S24 Ultra sınıfı):
+**`test/app.test.mjs` — 81 senaryo** (412×915 ekran, Galaxy S24 Ultra sınıfı):
 profil ekleme / düzenleme / arşivleme / silme, çocuklar arası veri izolasyonu,
 hafta gezinme, haftanın sesi devralma kuralı, yüzde hesapları, özel görevler,
 rapor içeriği ve filtreleme, A4 PDF belgesinin yapısı, JSON yedek al / geri
 yükle / birleştir, v1 → v2 migration, yeniden açılışta kalıcılık, çocuğun adı
-değişince veri kaybı olmaması ve yatay taşma kontrolü.
+değişince veri kaybı olmaması, eski sürüm dökümünün aktarılması ve yatay
+taşma kontrolü.
 
 **`test/native.test.mjs` — 17 senaryo**: native köprü taklit edilerek
 eklentilerin gerçekten bağlandığı ve `📤 Öğretmene Gönder`, `🖨️ Yazdır`,
