@@ -144,6 +144,7 @@ test/
   server.mjs              Testler için statik sunucu
   app.test.mjs            Uçtan uca kabul testleri
   native.test.mjs         Native köprü / eklenti testleri
+  legacy.test.mjs         Eski sürümden taşıma testleri
 ```
 
 `npm run build` bir bundler çalıştırmaz; `www/` doğrudan paketlenir. Bunun yerine
@@ -265,6 +266,10 @@ rapor içeriği ve filtreleme, A4 PDF belgesinin yapısı, JSON yedek al / geri
 yükle / birleştir, v1 → v2 migration, yeniden açılışta kalıcılık, çocuğun adı
 değişince veri kaybı olmaması, eski sürüm dökümünün aktarılması ve yatay
 taşma kontrolü.
+
+**`test/legacy.test.mjs` — 8 senaryo**: eski HTML sürümündeki dışa aktarma
+düğmesi, çıkan dökümün biçimi ve uygulamada geri yüklendiğinde profillerin
+doğru oluşması.
 
 **`test/native.test.mjs` — 17 senaryo**: native köprü taklit edilerek
 eklentilerin gerçekten bağlandığı ve `📤 Öğretmene Gönder`, `🖨️ Yazdır`,

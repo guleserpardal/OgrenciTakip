@@ -9,7 +9,7 @@
     "sync": "npm run build && npx cap sync android",
     "apk:debug": "npm run sync && cd android && ./gradlew assembleDebug",
     "apk:release": "npm run sync && cd android && ./gradlew assembleRelease",
-    "test": "node test/app.test.mjs && node test/native.test.mjs"
+    "test": "node test/app.test.mjs && node test/native.test.mjs && node test/legacy.test.mjs"
   },
   "dependencies": {
     "@capacitor/app": "^8.0.1",
