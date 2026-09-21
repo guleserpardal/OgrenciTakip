@@ -18,3 +18,6 @@ keystore.properties
 
 # Local scratch
 *.log
+
+# Test ciktilari
+.test-shots/

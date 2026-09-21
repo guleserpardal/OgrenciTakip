@@ -11,6 +11,7 @@ import {
   CARE_GROUPS, THEME_ORDER, AVATARS,
 } from './constants.js';
 import { uid, dateKey, mondayOf, parseDateKey, debounce, pct } from './util.js';
+import { nativePlugin } from './plugins.js';
 
 const STORAGE_KEY = 'evdeEgitimTakip:data';
 const LEGACY_PREFIX = 'odevTakip:v1:';
@@ -294,8 +295,7 @@ function normalize(input) {
 /* --------------------------------------------------------------- init --- */
 
 export async function initStore() {
-  const cap = globalThis.Capacitor;
-  prefs = cap?.Plugins?.Preferences || null;
+  prefs = nativePlugin('Preferences');
 
   const raw = await readRaw();
   let parsed = null;

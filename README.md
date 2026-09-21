@@ -131,6 +131,8 @@ www/                      Uygulamanın tamamı (Capacitor bunu paketler)
       parent.js           Anne takibi
       report.js           Öğretmen raporu + A4 PDF/yazdırma
       settings.js         Yedekleme, geri yükleme, hafta seçici
+    plugins.js          Capacitor eklenti kayıtları
+  js/vendor/capacitor.js  @capacitor/core (build sırasında kopyalanır)
 android/                  Android Studio ile açılabilen Capacitor projesi
   app/src/main/java/com/guleser/evdeegitimtakip/
     MainActivity.java
@@ -138,6 +140,10 @@ android/                  Android Studio ile açılabilen Capacitor projesi
   app/src/main/java/android/print/
     PdfPrint.java         WebView → A4 PDF yazıcısı
 scripts/build.mjs         Sözdizimi + "CDN yok" doğrulaması
+test/
+  server.mjs              Testler için statik sunucu
+  app.test.mjs            Uçtan uca kabul testleri
+  native.test.mjs         Native köprü / eklenti testleri
 ```
 
 `npm run build` bir bundler çalıştırmaz; `www/` doğrudan paketlenir. Bunun yerine
@@ -221,14 +227,34 @@ seçeneği sunulur.
 
 ---
 
-## 6. Doğrulama
-
-`www/` içindeki uygulama Chromium'da (412×915, Galaxy S24 Ultra sınıfı ekran)
-uçtan uca test edilmiştir: 76 senaryo — profil ekleme/düzenleme/arşivleme/silme,
-çocuklar arası veri izolasyonu, hafta gezinme, haftanın sesi devralma kuralı,
-yüzde hesapları, rapor içeriği, A4 PDF belgesi, JSON yedek al/geri yükle,
-v1 → v2 migration ve yeniden açılışta kalıcılık.
+## 6. Testler
 
 ```bash
-npm run verify     # sözdizimi + CDN kontrolü
+npm run verify     # sözdizimi + "CDN yok" kontrolü
+npm test           # Chromium'da uçtan uca testler
 ```
+
+İlk çalıştırmadan önce tarayıcı gerekir:
+
+```bash
+npx playwright install chromium
+```
+
+Sistemde hazır bir Chromium varsa `CHROMIUM_PATH` ile gösterebilirsiniz.
+
+İki takım test vardır ve her ikisi de CI'da APK derlemesinden **önce** çalışır:
+
+**`test/app.test.mjs` — 76 senaryo** (412×915 ekran, Galaxy S24 Ultra sınıfı):
+profil ekleme / düzenleme / arşivleme / silme, çocuklar arası veri izolasyonu,
+hafta gezinme, haftanın sesi devralma kuralı, yüzde hesapları, özel görevler,
+rapor içeriği ve filtreleme, A4 PDF belgesinin yapısı, JSON yedek al / geri
+yükle / birleştir, v1 → v2 migration, yeniden açılışta kalıcılık, çocuğun adı
+değişince veri kaybı olmaması ve yatay taşma kontrolü.
+
+**`test/native.test.mjs` — 17 senaryo**: native köprü taklit edilerek
+eklentilerin gerçekten bağlandığı ve `📤 Öğretmene Gönder`, `🖨️ Yazdır`,
+yedek dışa aktarma ile kalıcı saklamanın native tarafa doğru içerikle gittiği
+doğrulanır.
+
+> Android tarafındaki `ReportBridge` / `PdfPrint` sınıfları CI'daki gerçek
+> Gradle derlemesiyle doğrulanır.

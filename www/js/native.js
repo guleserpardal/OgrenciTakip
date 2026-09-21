@@ -2,12 +2,14 @@
 // Tarayicida calisirken makul yedek davranislar devreye girer
 // (window.print / dosya indirme), boylece ayni kod her yerde test edilebilir.
 
+import { nativePlugin, isNativePlatform } from './plugins.js';
+
 function plugin() {
-  return globalThis.Capacitor?.Plugins?.ReportBridge || null;
+  return nativePlugin('ReportBridge');
 }
 
 export function isNative() {
-  return !!globalThis.Capacitor?.isNativePlatform?.() && !!plugin();
+  return isNativePlatform() && !!plugin();
 }
 
 /** Bagimsiz bir HTML belgesini Android sistem yazdirma ekraninda acar. */

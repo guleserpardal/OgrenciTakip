@@ -19,8 +19,42 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    name: Uygulama testleri (Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Bagimliliklar
+        run: npm ci
+
+      - name: Chromium kurulumu
+        run: npx playwright install --with-deps chromium
+
+      - name: Web varliklarini dogrula
+        run: npm run build
+
+      - name: Uctan uca testler
+        run: npm test
+
+      - name: Basarisiz test ekran goruntuleri
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-ekran-goruntuleri
+          path: .test-shots/
+          if-no-files-found: ignore
+
   build:
     name: Debug + Release APK
+    needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:

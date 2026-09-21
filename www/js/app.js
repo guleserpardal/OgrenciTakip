@@ -10,6 +10,7 @@ import * as parentView from './views/parent.js';
 import * as reportView from './views/report.js';
 import { renderTrackerHead } from './views/tracker.js';
 import { setupSafeArea } from './native.js';
+import { nativePlugin } from './plugins.js';
 
 const VIEWS = {
   homework: { render: homeworkView.render, host: '#view-homework', title: (c) => `${genitive(c.name)} Bu Haftası`, strip: true },
@@ -193,7 +194,7 @@ function wireLifecycle() {
   window.addEventListener('pagehide', flush);
   window.addEventListener('beforeunload', flush);
 
-  const appPlugin = globalThis.Capacitor?.Plugins?.App;
+  const appPlugin = nativePlugin('App');
   if (appPlugin) {
     appPlugin.addListener('appStateChange', ({ isActive }) => {
       if (!isActive) flush();

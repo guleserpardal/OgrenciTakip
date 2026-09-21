@@ -6,7 +6,7 @@
 //   3. index.html'in referans verdigi yerel dosyalar gercekten var olmalidir.
 
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
 import { join, relative, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -15,6 +15,21 @@ const WWW = join(ROOT, 'www');
 
 const errors = [];
 const warnings = [];
+
+/* 0 — Capacitor core global derlemesi www/ icine kopyalanir.
+   Native kopru Capacitor.Plugins koleksiyonunu doldurmadigi icin
+   registerPlugin'e ihtiyac var; bu dosya olmadan yazdirma/PDF/paylasim
+   ve kalici saklama eklentileri sessizce devre disi kalir. */
+const CORE_SRC = join(ROOT, 'node_modules/@capacitor/core/dist/capacitor.js');
+const CORE_DEST = join(ROOT, 'www/js/vendor/capacitor.js');
+if (existsSync(CORE_SRC)) {
+  mkdirSync(dirname(CORE_DEST), { recursive: true });
+  copyFileSync(CORE_SRC, CORE_DEST);
+} else if (!existsSync(CORE_DEST)) {
+  errors.push('www/js/vendor/capacitor.js yok ve @capacitor/core kurulu degil — once `npm install`.');
+} else {
+  warnings.push('@capacitor/core kurulu degil; www/js/vendor/capacitor.js oldugu gibi kullaniliyor.');
+}
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {
@@ -76,6 +91,7 @@ console.log(`Evde Egitim Takip — web varliklari kontrolu`);
 console.log(`  dosya    : ${files.length} (${jsFiles.length} JS)`);
 console.log(`  boyut    : ${(totalBytes / 1024).toFixed(0)} KB`);
 console.log(`  dis kaynak: yok (CDN bagimliligi olmamali)`);
+console.log(`  capacitor : www/js/vendor/capacitor.js paketlendi`);
 
 for (const w of warnings) console.warn(`  UYARI: ${w}`);
 

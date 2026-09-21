@@ -8,7 +8,8 @@
     "verify": "node scripts/build.mjs --verify-only",
     "sync": "npm run build && npx cap sync android",
     "apk:debug": "npm run sync && cd android && ./gradlew assembleDebug",
-    "apk:release": "npm run sync && cd android && ./gradlew assembleRelease"
+    "apk:release": "npm run sync && cd android && ./gradlew assembleRelease",
+    "test": "node test/app.test.mjs && node test/native.test.mjs"
   },
   "dependencies": {
     "@capacitor/app": "^8.0.1",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "@capacitor/android": "^8.5.2",
-    "@capacitor/cli": "^8.5.2"
+    "@capacitor/cli": "^8.5.2",
+    "playwright": "1.56.1"
   }
 }
