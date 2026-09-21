@@ -1,6 +1,6 @@
 // Uygulama girisi: baslatma, hafta/gun durumu, gorunum yonlendirme.
 
-import { $, el, toast, mondayOf, addDays, parseDateKey, dateKey, fmtDate, todayIndex } from './util.js';
+import { $, toast, mondayOf, addDays, parseDateKey, dateKey, fmtDate, todayIndex } from './util.js';
 import * as store from './store.js';
 import { applyTheme, avatarNode, renderChildStrip, openProfileMenu, renderOnboarding } from './views/children.js';
 import { openSettings } from './views/settings.js';

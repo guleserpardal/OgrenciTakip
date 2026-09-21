@@ -3,7 +3,7 @@
 import { el, toast, openModal, confirmDialog, fmtDate, dateKey } from '../util.js';
 import * as store from '../store.js';
 import { shareTextFile } from '../native.js';
-import { openChildForm, openProfileMenu, avatarNode } from './children.js';
+import { openChildForm, avatarNode } from './children.js';
 
 /* ------------------------------------------------------- disa aktarma --- */
 

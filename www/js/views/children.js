@@ -2,7 +2,7 @@
 // ekleme / duzenleme / arsivleme / silme. Hicbir yerde isme gore is mantigi yok.
 
 import { THEMES, THEME_ORDER, AVATARS } from '../constants.js';
-import { $, el, toast, openModal, confirmDialog } from '../util.js';
+import { el, toast, openModal, confirmDialog } from '../util.js';
 import * as store from '../store.js';
 
 /** Aktif cocugun temasini CSS degiskenlerine yazar. */

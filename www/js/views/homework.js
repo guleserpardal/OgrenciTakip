@@ -39,7 +39,6 @@ export function render(host, ctx) {
 /* --------------------------------------------------------- haftanin sesi --- */
 
 function soundCard(ctx, child) {
-  const own = store.getOwnSound(ctx.weekKey, child.id);
   const effective = store.getSound(ctx.weekKey, child.id);
   const input = el('input', {
     type: 'text',
