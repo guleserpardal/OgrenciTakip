@@ -1,0 +1,20 @@
+node_modules/
+.DS_Store
+
+# Android build output
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/captures/
+android/.idea/
+*.iml
+*.hprof
+
+# Signing material — never commit keystores or passwords
+*.jks
+*.keystore
+keystore.properties
+
+# Local scratch
+*.log

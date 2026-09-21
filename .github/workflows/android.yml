@@ -1,0 +1,131 @@
+name: Android APK
+
+# APK'yi GitHub'in Android SDK'si kurulu calistiricilarinda uretir.
+on:
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: "APK'yi 'apk-latest' surumune yukle (telefondan dogrudan indirilebilir)"
+        type: boolean
+        default: true
+  push:
+    branches:
+      - claude/apk-build-html-app-9cpg5r
+      - main
+    paths-ignore:
+      - '**.md'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Debug + Release APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      # `secrets` baglami adim seviyesindeki `if` icinde okunamaz, job env'ine tasiniyor.
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: JDK 21 kurulumu
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Android SDK kurulumu
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+
+      - name: Gradle onbellegi
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Bagimliliklar
+        run: npm ci
+
+      - name: Web varliklarini dogrula
+        run: npm run build
+
+      - name: Capacitor senkronizasyonu
+        run: npx cap sync android
+
+      - name: Release imzalama anahtarini hazirla
+        # Secret tanimliysa release APK imzalanir; tanimli degilse imzasiz uretilir.
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > android/release.jks
+          cat > android/keystore.properties <<PROPS
+          storeFile=../release.jks
+          storePassword=$STORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          PROPS
+
+      - name: Debug APK derle
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Release APK derle
+        working-directory: android
+        run: ./gradlew --no-daemon assembleRelease
+
+      - name: APK'lari yeniden adlandir
+        id: collect
+        run: |
+          mkdir -p dist
+          VERSION=$(node -p "require('./package.json').version")
+          cp android/app/build/outputs/apk/debug/app-debug.apk \
+             "dist/EvdeEgitimTakip-${VERSION}-debug.apk"
+          REL=$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)
+          if [ -n "$REL" ]; then
+            case "$REL" in
+              *unsigned*) SUFFIX="release-unsigned" ;;
+              *)          SUFFIX="release" ;;
+            esac
+            cp "$REL" "dist/EvdeEgitimTakip-${VERSION}-${SUFFIX}.apk"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          ls -lh dist
+
+      - name: APK'lari artifact olarak yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: EvdeEgitimTakip-apk
+          path: dist/*.apk
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Dogrudan indirilebilir surume yukle
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_release }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="apk-latest"
+          NOTES="Evde Eğitim Takip ${{ steps.collect.outputs.version }} — otomatik derleme (${GITHUB_SHA::7}).
+
+          Telefondan doğrudan indirip kurabilirsiniz. Kurulum sırasında
+          \"Bilinmeyen kaynaklara izin ver\" onayı gerekebilir."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/*.apk --clobber
+            gh release edit "$TAG" --notes "$NOTES"
+          else
+            gh release create "$TAG" dist/*.apk \
+              --title "Evde Eğitim Takip — son APK" \
+              --notes "$NOTES" \
+              --prerelease
+          fi

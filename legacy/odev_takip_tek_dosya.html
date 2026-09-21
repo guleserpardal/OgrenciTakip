@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ff78ad" />
+  <title>Elis & Lila – Evde Eğitim Takip</title>
+  <style>
+:root{--pink:#ff78ad;--pink2:#ffd5e6;--purple:#9a7cf6;--blue:#78c8ff;--mint:#8de0ba;--yellow:#ffd76f;--ink:#30305b;--paper:#fffdfd;--line:#eee5f0;--shadow:0 8px 24px rgba(95,67,124,.12)}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(#fff8fb,#f7fbff);color:var(--ink)}
+button,input,textarea{font:inherit}button{cursor:pointer}.app-shell{max-width:920px;margin:auto;padding:12px 12px 42px}.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#ffe3ef,#e9e2ff 45%,#dff7ff);border-radius:28px;padding:22px 18px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;gap:16px}.hero h1{margin:2px 0;font-size:clamp(30px,7vw,52px);line-height:1}.hero p{margin:5px 0 0;font-weight:700}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.15em}.cloud,.sun{position:absolute;font-size:58px;opacity:.25}.cloud{right:20%;top:-12px}.sun{right:5%;bottom:-15px}.card{background:rgba(255,255,255,.94);border:2px solid rgba(255,120,173,.16);border-radius:22px;box-shadow:var(--shadow)}
+.weekbar{margin-top:12px;padding:10px;display:flex;align-items:center;gap:10px}.week-title{flex:1;display:flex;flex-direction:column;min-width:0}.week-title strong{font-size:18px}.week-title span{font-size:12px;color:#6f6f91}.round,.pill,.ghost{border:0;background:#fff;border-radius:999px;font-weight:800;color:var(--ink)}.round{width:40px;height:40px;font-size:28px}.pill,.ghost{padding:10px 12px}.focus{margin-top:12px;padding:14px;display:flex;align-items:end;justify-content:space-between;gap:12px;background:linear-gradient(90deg,#fff3a8,#ffe1ec)}.label{font-size:12px;font-weight:900;letter-spacing:.06em;color:#7b668c;text-transform:uppercase}.sound-row{display:flex;align-items:center;gap:10px}.sound-row input{width:90px;font-size:30px;font-weight:900;color:#f44785;border:0;background:transparent;outline:none}.sound-emoji{font-size:24px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}.tab{border:0;padding:12px 8px;border-radius:16px;font-weight:900;background:#ece9f8;color:#625b79}.tab.active{background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff}.tabpane{display:none}.tabpane.active{display:block}.child-switch{display:grid;grid-template-columns:1fr 1fr;padding:8px;gap:8px}.child-btn{border:0;border-radius:15px;padding:12px;font-weight:900;background:#fff0f6;color:#a13b69}.child-btn[data-child="Lila"]{background:#f2ecff;color:#6d51b8}.child-btn.active{outline:3px solid rgba(255,120,173,.35)}
+.progress-card{margin-top:10px;padding:14px;background:linear-gradient(135deg,#fff,#fff5f9)}.progress-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.bar{height:14px;border-radius:99px;background:#f0edf7;overflow:hidden;margin-top:8px}.bar>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));transition:.25s}.day-strip{margin-top:10px;padding:8px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.day{border:0;border-radius:14px;padding:9px 4px;font-size:12px;font-weight:900;background:#fff}.day.active{background:var(--yellow)}
+.task-list{display:grid;gap:10px;margin-top:10px}.task-card{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;padding:12px;gap:10px}.task-icon{font-size:34px;text-align:center}.task-copy h3{margin:0 0 3px;font-size:16px}.task-copy p{margin:0;color:#777693;font-size:13px}.check-btn{width:48px;height:48px;border-radius:15px;border:2px solid #ffd0e1;background:#fff;color:#c8bfd0;font-size:26px;font-weight:900}.task-card.done{background:linear-gradient(135deg,#f2fff8,#fff)}.task-card.done .check-btn{background:var(--mint);border-color:var(--mint);color:#fff}.category-title{margin:15px 4px 5px;font-size:14px;font-weight:950;color:#6c5c86;display:flex;align-items:center;gap:6px}.reflection,.notes-card{margin-top:12px;padding:14px}.reflection label{display:block;font-weight:800;margin-top:10px}.reflection textarea,.notes-card textarea,.report-controls textarea{width:100%;margin-top:5px;border:2px dashed #e8c9dc;border-radius:14px;padding:10px;resize:vertical;background:#fff}.stars{display:flex;gap:8px;margin:12px 0}.star{border:0;background:#fff4c7;border-radius:14px;width:48px;height:48px;font-size:26px}.star.on{background:#ffd34f}.btn{border:0;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;border-radius:14px;padding:12px 16px;font-weight:900;box-shadow:0 6px 14px rgba(154,124,246,.2)}.btn.small{padding:10px 12px}.btn.secondary{background:linear-gradient(90deg,#59c7b1,#6fb6ff)}.hidden{display:none!important}
+.parent-head{padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}.parent-head h2{margin:2px 0 0;font-size:20px}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.summary-card{padding:14px;border-radius:20px;color:#fff;box-shadow:var(--shadow)}.summary-card.elis{background:linear-gradient(135deg,#ff8db8,#ffb972)}.summary-card.lila{background:linear-gradient(135deg,#9b83ff,#74c9ff)}.summary-card strong{font-size:28px}.table-card{margin-top:10px;padding:12px}.table-card h3{margin:2px 0 10px}.table-wrap{overflow:auto}.table-wrap table{border-collapse:collapse;width:100%;min-width:760px}.table-wrap th,.table-wrap td{border-bottom:1px solid var(--line);padding:9px;text-align:center;font-size:12px}.table-wrap th:first-child,.table-wrap td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1}.mini-check{width:28px;height:28px;border:2px solid #d9cfea;border-radius:9px;background:#fff;font-weight:900;color:#fff}.mini-check.done{background:#79d8b3;border-color:#79d8b3}.notes-card textarea{margin-bottom:10px}
+.care-intro{margin-top:10px;padding:14px;background:linear-gradient(135deg,#eafff5,#fff4fb)}.care-intro h3{margin:0 0 4px}.care-intro p{margin:0;color:#6f6f91;font-size:13px}
+.report-controls{padding:14px;margin-bottom:12px}.report-controls h2{margin:2px 0 6px}.report-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.report-sheet{background:#fff;border-radius:20px;padding:22px;box-shadow:var(--shadow);border:1px solid #eee}.report-brand{text-align:center;border-bottom:3px solid #f4dbe7;padding-bottom:12px;margin-bottom:18px}.report-brand h1{margin:0;font-size:25px}.report-brand p{margin:5px 0 0;color:#666}.report-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.meta-box{border:1px solid #eaddea;border-radius:12px;padding:9px;font-size:13px}.child-report{padding:4px 0 16px}.child-report h2{margin:0 0 10px;padding:9px 12px;border-radius:12px;background:linear-gradient(90deg,#fff0f6,#f3efff)}.report-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.report-stat{border:1px solid #eaddea;border-radius:14px;padding:10px}.report-stat strong{font-size:24px;display:block}.report-table{width:100%;border-collapse:collapse;margin:8px 0 14px}.report-table th,.report-table td{border:1px solid #e8e0ea;padding:7px;font-size:12px;text-align:left}.report-table th:last-child,.report-table td:last-child{text-align:center;width:80px}.report-note{border:1px solid #eaddea;border-radius:14px;padding:10px;margin-top:8px}.report-note h4{margin:0 0 5px}.report-note p{white-space:pre-wrap;margin:0;color:#555;min-height:20px}.teacher-box{margin-top:14px;border:2px dashed #d8c9df;border-radius:14px;padding:10px;min-height:90px}.teacher-box strong{display:block;margin-bottom:8px}.teacher-lines{height:52px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 22px,#e8e1eb 23px)}
+footer{text-align:center;padding:26px 0 0;font-weight:800;color:#8a7d9c}
+@media(max-width:700px){.tabs{grid-template-columns:1fr 1fr}.hero{padding-top:18px}.focus{align-items:center}.sound-emoji{font-size:20px}.day-strip{gap:3px}.day{font-size:10px;padding:8px 2px}.task-card{grid-template-columns:44px 1fr 46px}.summary-grid,.report-stats{grid-template-columns:1fr 1fr}.parent-head{align-items:flex-start;flex-direction:column}.report-meta{grid-template-columns:1fr}.report-sheet{padding:14px}.report-table th,.report-table td{font-size:11px;padding:6px}}
+@media print{
+  body{background:#fff;color:#111}.app-shell{max-width:none;padding:0}.hero,.weekbar,.focus,.tabs,#childTab,#careTab,#parentTab,.report-controls,footer{display:none!important}#reportTab{display:block!important}.report-sheet{box-shadow:none;border:0;border-radius:0;padding:8mm}.report-brand{margin-bottom:10px}.child-report{break-inside:avoid}.child-report+.child-report{break-before:page}.teacher-box{min-height:90px}.report-table{page-break-inside:avoid}
+  @page{size:A4;margin:10mm}
+}
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="hero">
+    <div class="cloud">☁️</div><div class="sun">☀️</div>
+    <div><div class="eyebrow">EVDE EĞİTİM</div><h1>Takip Merkezi 🌈</h1><p>Elis & Lila • ödev + özbakım + haftalık rapor</p></div>
+  </header>
+
+  <section class="weekbar card">
+    <button id="prevWeek" class="round">‹</button>
+    <div class="week-title"><strong id="weekLabel">Bu hafta</strong><span id="weekDates"></span></div>
+    <button id="todayWeek" class="pill">Bu hafta</button>
+    <button id="nextWeek" class="round">›</button>
+  </section>
+
+  <section class="focus card">
+    <div><span class="label">Bu haftanın sesi</span><div class="sound-row"><input id="weeklySound" maxlength="8" value="A a" aria-label="Bu haftanın sesi" /><span class="sound-emoji">🐝 🌳 🚗 🍎</span></div></div>
+    <button id="saveSound" class="btn small">Kaydet</button>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="child">📚 Ödev</button>
+    <button class="tab" data-tab="care">🪥 Özbakım</button>
+    <button class="tab" data-tab="parent">🧡 Anne takibi</button>
+    <button class="tab" data-tab="report">📄 Öğretmen raporu</button>
+  </nav>
+
+  <main>
+    <section id="childTab" class="tabpane active">
+      <div class="child-switch card">
+        <button class="child-btn active" data-child="Elis">🌸 Elis</button><button class="child-btn" data-child="Lila">💜 Lila</button>
+      </div>
+      <div id="childProgress" class="progress-card card"></div>
+      <div class="day-strip card" id="dayStrip"></div>
+      <div id="taskList" class="task-list"></div>
+      <section class="reflection card">
+        <h3>✨ Haftanın minik notları</h3>
+        <label>En sevdiğim etkinlik<textarea id="favActivity" rows="2" placeholder="Örn. hikâye okumak"></textarea></label>
+        <label>Bu hafta zorlandığım şey<textarea id="hardThing" rows="2" placeholder="Örn. satırda yazmak"></textarea></label>
+        <div class="stars" id="selfStars" aria-label="Haftanın yıldızları"></div>
+        <button id="saveReflection" class="btn">Notları kaydet</button>
+      </section>
+    </section>
+
+    <section id="careTab" class="tabpane">
+      <div class="child-switch card">
+        <button class="child-btn active" data-child="Elis">🌸 Elis</button><button class="child-btn" data-child="Lila">💜 Lila</button>
+      </div>
+      <section class="care-intro card"><h3>🫧 Özbakım takip formu</h3><p>Çocuklar büyük kutulara dokunarak kendileri işaretleyebilir. Sabah, gün içi ve akşam becerileri ayrı gösterilir.</p></section>
+      <div id="careProgress" class="progress-card card"></div>
+      <div class="day-strip card" id="careDayStrip"></div>
+      <div id="careTaskList" class="task-list"></div>
+      <section class="notes-card card"><h3>💗 Özbakım notu</h3><textarea id="careNote" rows="3" placeholder="Bu hafta hangi beceri bağımsızlaştı, hangisinde hatırlatma gerekti?"></textarea><button id="saveCareNote" class="btn">Özbakım notunu kaydet</button></section>
+    </section>
+
+    <section id="parentTab" class="tabpane">
+      <section class="card parent-head"><div><span class="label">Anne görünümü</span><h2>İki çocuğu tek ekrandan takip et</h2></div><button id="addTask" class="btn small">＋ Ödev görevi ekle</button></section>
+      <div id="parentSummary" class="summary-grid"></div>
+      <section class="card table-card"><h3>📚 Ödev haftalık görünümü</h3><div class="table-wrap"><table id="parentTable"></table></div></section>
+      <section class="card table-card"><h3>🪥 Özbakım haftalık görünümü</h3><div class="table-wrap"><table id="careParentTable"></table></div></section>
+      <section class="card notes-card"><h3>📝 Haftalık anne notu</h3><textarea id="parentNote" rows="4" placeholder="Bu hafta iyi gidenler, zorlandıkları alanlar, gelecek haftaya not..."></textarea><button id="saveParentNote" class="btn">Anne notunu kaydet</button></section>
+    </section>
+
+    <section id="reportTab" class="tabpane">
+      <section class="report-controls card">
+        <span class="label">Öğretmene gönderilecek çıktı</span><h2>Haftalık evde eğitim raporu</h2>
+        <p style="margin:4px 0;color:#6f6f91">Rapor otomatik olarak bu haftanın işaretlemelerinden hazırlanır. Yazdır ekranından <b>PDF olarak kaydet</b> seçeneğini kullanabilirsin.</p>
+        <label style="display:block;font-weight:800;margin-top:10px">Öğretmene kısa not<textarea id="reportNoteInput" rows="3" placeholder="Örn. A sesinde ilerledik, satır takibinde biraz daha çalışacağız."></textarea></label>
+        <div class="report-actions"><button id="saveReportNote" class="btn secondary">Notu kaydet</button><button id="printReport" class="btn">🖨️ Yazdır / PDF kaydet</button></div>
+      </section>
+      <section id="reportSheet" class="report-sheet"></section>
+    </section>
+  </main>
+  <footer>💗 Küçük adımlar, büyük başarılar.</footer>
+</div>
+
+<template id="taskTemplate"><article class="task-card card"><div class="task-icon"></div><div class="task-copy"><h3></h3><p></p></div><button class="check-btn" aria-label="Tamamlandı">✓</button></article></template>
+
+<script>
+const DEFAULT_TASKS=[
+{id:'sound',icon:'🔤',title:'Ses / harf çalışması',desc:'O günkü sesi tanı, oku ve yaz'},
+{id:'areview',icon:'🐝',title:'Haftanın sesi kısa tekrar',desc:'5–10 dk kısa tekrar'},
+{id:'read',icon:'📖',title:'Okuma çalışması',desc:'Hece / kelime / kısa cümle'},
+{id:'write',icon:'✏️',title:'Yazma çalışması',desc:'Güzel yazı ve satır çalışması'},
+{id:'math',icon:'🔢',title:'Matematik',desc:'Sayı / eşleştirme / işlem'},
+{id:'book',icon:'📚',title:'Kitap / hikâye',desc:'10–15 dakika'},
+{id:'activity',icon:'🎨',title:'Sanat / etkinlik',desc:'Kesme, boyama, yapıştırma, oyun'},
+{id:'life',icon:'🌍',title:'Hayat bilgisi / sohbet',desc:'Günlük yaşam, gözlem, paylaşım'}];
+const CARE_TASKS=[
+{id:'toilet',cat:'Sabah',icon:'🚽',title:'Tuvalete gittim',desc:'İhtiyacımı fark ettim ve temizliğimi yaptım'},
+{id:'hands',cat:'Sabah',icon:'🫧',title:'Ellerimi yıkadım',desc:'Sabun kullandım ve ellerimi kuruladım'},
+{id:'face',cat:'Sabah',icon:'💦',title:'Elimi yüzümü yıkadım',desc:'Sabah temizliğimi yaptım'},
+{id:'teeth_am',cat:'Sabah',icon:'🪥',title:'Dişlerimi fırçaladım',desc:'Sabah diş bakımımı yaptım'},
+{id:'dress',cat:'Sabah',icon:'👕',title:'Giyindim',desc:'Kıyafetlerimi giydim / yardım aldım'},
+{id:'meal',cat:'Gün içinde',icon:'🍽️',title:'Yemeğimi güzel yedim',desc:'Sofra düzenine dikkat ettim'},
+{id:'water',cat:'Gün içinde',icon:'💧',title:'Suyumu içtim',desc:'Gün içinde su içmeyi hatırladım'},
+{id:'toys',cat:'Gün içinde',icon:'🧸',title:'Oyuncaklarımı topladım',desc:'Kullandıklarımı yerine koydum'},
+{id:'hair',cat:'Gün içinde',icon:'🪮',title:'Saçımı taradım',desc:'Kişisel bakımımı tamamladım'},
+{id:'teeth_pm',cat:'Akşam',icon:'🪥',title:'Dişlerimi fırçaladım',desc:'Akşam diş bakımımı yaptım'},
+{id:'pajama',cat:'Akşam',icon:'🌙',title:'Pijamamı giydim',desc:'Uyku hazırlığına başladım'},
+{id:'sleep',cat:'Akşam',icon:'🛏️',title:'Uykuya hazırlandım',desc:'Yatağa hazırlanıp rutinimi tamamladım'}];
+const DAYS=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+const FULL_DAYS=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+let selectedChild='Elis';
+let dayIndex=Math.min(6,Math.max(0,(new Date().getDay()+6)%7));
+let weekStart=mondayOf(new Date());
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function mondayOf(d){const x=new Date(d);x.setHours(0,0,0,0);const n=(x.getDay()+6)%7;x.setDate(x.getDate()-n);return x}
+function fmt(d){return new Intl.DateTimeFormat('tr-TR',{day:'2-digit',month:'short',year:'numeric'}).format(d)}
+function weekKey(){return weekStart.toISOString().slice(0,10)}
+function storageKey(){return `odevTakip:v1:${weekKey()}`}
+function emptyChildObj(){return {Elis:{},Lila:{}}}
+function baseData(){return {sound:'A a',tasks:DEFAULT_TASKS,done:emptyChildObj(),reflection:{Elis:{fav:'',hard:'',stars:0},Lila:{fav:'',hard:'',stars:0}},parentNote:'',careTasks:CARE_TASKS,careDone:emptyChildObj(),careNote:{Elis:'',Lila:''},reportNote:''}}
+function load(){
+ const base=baseData(),raw=localStorage.getItem(storageKey()); if(!raw)return base;
+ try{const v=JSON.parse(raw);return {...base,...v,tasks:v.tasks?.length?v.tasks:DEFAULT_TASKS,careTasks:v.careTasks?.length?v.careTasks:CARE_TASKS,done:{Elis:{...(v.done?.Elis||{})},Lila:{...(v.done?.Lila||{})}},careDone:{Elis:{...(v.careDone?.Elis||{})},Lila:{...(v.careDone?.Lila||{})}},reflection:{Elis:{...base.reflection.Elis,...(v.reflection?.Elis||{})},Lila:{...base.reflection.Lila,...(v.reflection?.Lila||{})}},careNote:{Elis:v.careNote?.Elis||'',Lila:v.careNote?.Lila||''}}}catch{return base}
+}
+function save(data){localStorage.setItem(storageKey(),JSON.stringify(data))}
+function updateWeekHeader(){const end=new Date(weekStart);end.setDate(end.getDate()+6);$('#weekDates').textContent=`${fmt(weekStart)} – ${fmt(end)}`;const now=mondayOf(new Date());const diff=Math.round((weekStart-now)/86400000/7);$('#weekLabel').textContent=diff===0?'Bu hafta':diff===1?'Gelecek hafta':diff===-1?'Geçen hafta':`${Math.abs(diff)} hafta ${diff>0?'sonra':'önce'}`}
+function render(){const data=load();updateWeekHeader();$('#weeklySound').value=data.sound||'';renderDays('#dayStrip');renderDays('#careDayStrip');renderChild(data);renderCare(data);renderParent(data);renderReport(data);syncChildButtons()}
+function renderDays(target){$(target).innerHTML=DAYS.map((d,i)=>`<button class="day ${i===dayIndex?'active':''}" data-day="${i}">${d}</button>`).join('');$(`${target}`).querySelectorAll('.day').forEach(b=>b.onclick=()=>{dayIndex=+b.dataset.day;render()})}
+function syncChildButtons(){$$('.child-btn').forEach(b=>b.classList.toggle('active',b.dataset.child===selectedChild))}
+function doneFor(data,child,taskId,day){return !!data.done?.[child]?.[`${taskId}:${day}`]}
+function setDone(data,child,taskId,day,val){data.done[child]??={};data.done[child][`${taskId}:${day}`]=val;save(data)}
+function careDoneFor(data,child,taskId,day){return !!data.careDone?.[child]?.[`${taskId}:${day}`]}
+function setCareDone(data,child,taskId,day,val){data.careDone[child]??={};data.careDone[child][`${taskId}:${day}`]=val;save(data)}
+function countDone(data,child,type='homework'){const tasks=type==='homework'?data.tasks:data.careTasks;const fn=type==='homework'?doneFor:careDoneFor;let n=0;tasks.forEach(t=>DAYS.forEach((_,i)=>{if(fn(data,child,t.id,i))n++}));return {n,total:tasks.length*7,pct:tasks.length?Math.round(n/(tasks.length*7)*100):0}}
+function renderChild(data){const s=countDone(data,selectedChild,'homework');$('#childProgress').innerHTML=`<div class="progress-top"><div><strong>${selectedChild}</strong><div>${FULL_DAYS[dayIndex]} • ${data.sound?`Haftanın sesi: ${escapeHtml(data.sound)}`:''}</div></div><strong>${s.pct}%</strong></div><div class="bar"><span style="width:${s.pct}%"></span></div>`;const list=$('#taskList');list.innerHTML='';data.tasks.forEach(task=>{const node=$('#taskTemplate').content.cloneNode(true),art=node.querySelector('.task-card');node.querySelector('.task-icon').textContent=task.icon;node.querySelector('h3').textContent=task.title;node.querySelector('p').textContent=task.desc;const btn=node.querySelector('.check-btn'),yes=doneFor(data,selectedChild,task.id,dayIndex);art.classList.toggle('done',yes);btn.textContent=yes?'★':'✓';btn.onclick=()=>{setDone(data,selectedChild,task.id,dayIndex,!yes);render()};list.appendChild(node)});const r=data.reflection[selectedChild]||{};$('#favActivity').value=r.fav||'';$('#hardThing').value=r.hard||'';$('#selfStars').innerHTML=[1,2,3,4,5].map(n=>`<button class="star ${n<=r.stars?'on':''}" data-star="${n}">★</button>`).join('');$$('.star').forEach(s=>s.onclick=()=>{data.reflection[selectedChild].stars=+s.dataset.star;save(data);renderChild(data)})}
+function renderCare(data){const s=countDone(data,selectedChild,'care');$('#careProgress').innerHTML=`<div class="progress-top"><div><strong>${selectedChild}</strong><div>${FULL_DAYS[dayIndex]} • Özbakım becerileri</div></div><strong>${s.pct}%</strong></div><div class="bar"><span style="width:${s.pct}%"></span></div>`;const list=$('#careTaskList');list.innerHTML='';let lastCat='';data.careTasks.forEach(task=>{if(task.cat!==lastCat){const h=document.createElement('div');h.className='category-title';h.textContent=(task.cat==='Sabah'?'☀️ ':task.cat==='Akşam'?'🌙 ':'🌼 ')+task.cat;list.appendChild(h);lastCat=task.cat}const node=$('#taskTemplate').content.cloneNode(true),art=node.querySelector('.task-card');node.querySelector('.task-icon').textContent=task.icon;node.querySelector('h3').textContent=task.title;node.querySelector('p').textContent=task.desc;const btn=node.querySelector('.check-btn'),yes=careDoneFor(data,selectedChild,task.id,dayIndex);art.classList.toggle('done',yes);btn.textContent=yes?'★':'✓';btn.onclick=()=>{setCareDone(data,selectedChild,task.id,dayIndex,!yes);render()};list.appendChild(node)});$('#careNote').value=data.careNote?.[selectedChild]||''}
+function parentTableHtml(data,type){const tasks=type==='homework'?data.tasks:data.careTasks,fn=type==='homework'?doneFor:careDoneFor;let html='<thead><tr><th>Etkinlik</th>'+DAYS.map(d=>`<th colspan="2">${d}</th>`).join('')+'</tr><tr><th></th>'+DAYS.map(()=>'<th>E</th><th>L</th>').join('')+'</tr></thead><tbody>';tasks.forEach(t=>{html+=`<tr><td>${t.icon} ${escapeHtml(t.title)}</td>`;DAYS.forEach((_,i)=>['Elis','Lila'].forEach(ch=>{const yes=fn(data,ch,t.id,i);html+=`<td><button class="mini-check ${yes?'done':''}" data-type="${type}" data-c="${ch}" data-t="${t.id}" data-d="${i}">${yes?'✓':''}</button></td>`}));html+='</tr>'});return html+'</tbody>'}
+function renderParent(data){const eH=countDone(data,'Elis','homework'),lH=countDone(data,'Lila','homework'),eC=countDone(data,'Elis','care'),lC=countDone(data,'Lila','care');$('#parentSummary').innerHTML=`<div class="summary-card elis"><div>🌸 Elis</div><strong>${eH.pct}%</strong><div>Ödev • ${eH.n}/${eH.total}</div><div>Özbakım • ${eC.pct}%</div></div><div class="summary-card lila"><div>💜 Lila</div><strong>${lH.pct}%</strong><div>Ödev • ${lH.n}/${lH.total}</div><div>Özbakım • ${lC.pct}%</div></div>`;$('#parentTable').innerHTML=parentTableHtml(data,'homework');$('#careParentTable').innerHTML=parentTableHtml(data,'care');$$('.mini-check').forEach(b=>b.onclick=()=>{const ch=b.dataset.c,t=b.dataset.t,d=+b.dataset.d;if(b.dataset.type==='homework'){setDone(data,ch,t,d,!doneFor(data,ch,t,d))}else{setCareDone(data,ch,t,d,!careDoneFor(data,ch,t,d))}render()});$('#parentNote').value=data.parentNote||''}
+function taskWeeklyCount(data,child,task,type){const fn=type==='homework'?doneFor:careDoneFor;let n=0;DAYS.forEach((_,i)=>{if(fn(data,child,task.id,i))n++});return n}
+function renderReport(data){$('#reportNoteInput').value=data.reportNote||'';const end=new Date(weekStart);end.setDate(end.getDate()+6);let html=`<div class="report-brand"><h1>Haftalık Evde Eğitim Takip Raporu</h1><p>Elis & Lila • Evden 1. Sınıf Eğitimi</p></div><div class="report-meta"><div class="meta-box"><b>Hafta</b><br>${fmt(weekStart)} – ${fmt(end)}</div><div class="meta-box"><b>Haftanın sesi</b><br>${escapeHtml(data.sound||'—')}</div><div class="meta-box"><b>Rapor tarihi</b><br>${fmt(new Date())}</div></div>`;['Elis','Lila'].forEach(child=>{const h=countDone(data,child,'homework'),c=countDone(data,child,'care'),r=data.reflection[child]||{};html+=`<article class="child-report"><h2>${child==='Elis'?'🌸':'💜'} ${child}</h2><div class="report-stats"><div class="report-stat"><span>Ödev tamamlama</span><strong>${h.pct}%</strong><small>${h.n}/${h.total} işaretleme</small></div><div class="report-stat"><span>Özbakım takibi</span><strong>${c.pct}%</strong><small>${c.n}/${c.total} işaretleme</small></div></div><h3>📚 Ders ve etkinlik özeti</h3><table class="report-table"><thead><tr><th>Alan</th><th>Haftada tamamlanan gün</th></tr></thead><tbody>${data.tasks.map(t=>`<tr><td>${t.icon} ${escapeHtml(t.title)}</td><td>${taskWeeklyCount(data,child,t,'homework')} / 7</td></tr>`).join('')}</tbody></table><h3>🪥 Özbakım özeti</h3><table class="report-table"><thead><tr><th>Beceri</th><th>Haftada tamamlanan gün</th></tr></thead><tbody>${data.careTasks.map(t=>`<tr><td>${t.icon} ${escapeHtml(t.title)}</td><td>${taskWeeklyCount(data,child,t,'care')} / 7</td></tr>`).join('')}</tbody></table><div class="report-note"><h4>Çocuğun haftalık değerlendirmesi</h4><p><b>En sevdiği etkinlik:</b> ${escapeHtml(r.fav||'—')}\n<b>Zorlandığı alan:</b> ${escapeHtml(r.hard||'—')}\n<b>Kendi yıldızı:</b> ${'★'.repeat(r.stars||0)}${'☆'.repeat(5-(r.stars||0))}</p></div><div class="report-note"><h4>Özbakım notu</h4><p>${escapeHtml(data.careNote?.[child]||'—')}</p></div><div class="teacher-box"><strong>Öğretmen notu / geri bildirim</strong><div class="teacher-lines"></div></div></article>`});html+=`<div class="report-note"><h4>Veli haftalık notu</h4><p>${escapeHtml(data.parentNote||'—')}</p></div><div class="report-note"><h4>Öğretmene kısa not</h4><p>${escapeHtml(data.reportNote||'—')}</p></div>`;$('#reportSheet').innerHTML=html}
+function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
+
+$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.toggle('active',x===b));['child','care','parent','report'].forEach(t=>$(`#${t}Tab`).classList.toggle('active',b.dataset.tab===t));if(b.dataset.tab==='report')renderReport(load())});
+$$('.child-btn').forEach(b=>b.onclick=()=>{selectedChild=b.dataset.child;render()});
+$('#prevWeek').onclick=()=>{weekStart.setDate(weekStart.getDate()-7);render()};
+$('#nextWeek').onclick=()=>{weekStart.setDate(weekStart.getDate()+7);render()};
+$('#todayWeek').onclick=()=>{weekStart=mondayOf(new Date());render()};
+$('#saveSound').onclick=()=>{const d=load();d.sound=$('#weeklySound').value.trim();save(d);render()};
+$('#saveReflection').onclick=()=>{const d=load();d.reflection[selectedChild]={...d.reflection[selectedChild],fav:$('#favActivity').value.trim(),hard:$('#hardThing').value.trim()};save(d);alert('Notlar kaydedildi 💗');renderReport(d)};
+$('#saveCareNote').onclick=()=>{const d=load();d.careNote[selectedChild]=$('#careNote').value.trim();save(d);alert('Özbakım notu kaydedildi 🫧');renderReport(d)};
+$('#saveParentNote').onclick=()=>{const d=load();d.parentNote=$('#parentNote').value.trim();save(d);alert('Anne notu kaydedildi 🧡');renderReport(d)};
+$('#saveReportNote').onclick=()=>{const d=load();d.reportNote=$('#reportNoteInput').value.trim();save(d);renderReport(d);alert('Rapor notu kaydedildi 📄')};
+$('#printReport').onclick=()=>{const d=load();d.reportNote=$('#reportNoteInput').value.trim();save(d);renderReport(d);setTimeout(()=>window.print(),120)};
+$('#addTask').onclick=()=>{const title=prompt('Yeni ödev görevi adı:');if(!title)return;const desc=prompt('Kısa açıklama:')||'';const icon=prompt('Emoji seç (örn. 🧩):')||'⭐';const d=load();d.tasks.push({id:'custom_'+Date.now(),title,desc,icon});save(d);render()};
+render();
+</script>
+</body>
+</html>
