@@ -1,0 +1,16 @@
+{
+  "appId": "com.guleser.evdeegitimtakip",
+  "appName": "Evde Eğitim Takip",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "CapacitorHttp": { "enabled": false }
+  }
+}
