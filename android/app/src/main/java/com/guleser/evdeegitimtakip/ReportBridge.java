@@ -7,7 +7,6 @@ import android.print.PdfPrint;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
-import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -80,7 +79,7 @@ public class ReportBridge extends Plugin {
                             }
                         }
                     });
-                    attachOffscreen(webView);
+                    retainWebView(webView);
                     webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
                 } catch (Exception e) {
                     call.reject("Yazdırma hazırlanamadı: " + e.getMessage(), e);
@@ -142,7 +141,7 @@ public class ReportBridge extends Plugin {
                             }
                         }
                     });
-                    attachOffscreen(webView);
+                    retainWebView(webView);
                     webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
                 } catch (Exception e) {
                     call.reject("PDF hazırlanamadı: " + e.getMessage(), e);
@@ -242,24 +241,15 @@ public class ReportBridge extends Plugin {
     }
 
     /**
-     * WebView'i 1x1 boyutunda gorunmez sekilde ekrana ekler. Baglanti kurulmadan
-     * yapilan yazdirmalar bazi cihazlarda bos sayfa uretebiliyor.
+     * WebView'i alanda tutar. Android'in yazdirma belgesi olusturma akisi
+     * WebView'in gorunum agacina eklenmesini gerektirmez; yalnizca is bitene
+     * kadar nesnenin yasamasi gerekir. Bir onceki is varsa serbest birakilir.
      */
-    private void attachOffscreen(WebView webView) {
-        ViewGroup root = getActivity().findViewById(android.R.id.content);
+    private void retainWebView(WebView webView) {
         if (jobWebView != null) {
-            ViewGroup parent = (ViewGroup) jobWebView.getParent();
-            if (parent != null) {
-                parent.removeView(jobWebView);
-            }
             jobWebView.destroy();
-            jobWebView = null;
         }
         jobWebView = webView;
-        webView.setAlpha(0f);
-        if (root != null) {
-            root.addView(webView, new ViewGroup.LayoutParams(1, 1));
-        }
     }
 
     private String sanitizeJobName(String name) {

@@ -30,7 +30,9 @@ public class PdfPrint {
     }
 
     public void print(final PrintDocumentAdapter adapter, final File directory, final String fileName) {
-        adapter.onLayout(null, printAttributes, null, new PrintDocumentAdapter.LayoutResultCallback() {
+        // CancellationSignal null birakilmamali: WebView'in yazdirma adaptoru
+        // uzerine iptal dinleyicisi bagladigi icin NPE'ye yol acabilir.
+        adapter.onLayout(null, printAttributes, new CancellationSignal(), new PrintDocumentAdapter.LayoutResultCallback() {
 
             @Override
             public void onLayoutFinished(PrintDocumentInfo info, boolean changed) {
