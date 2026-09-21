@@ -15,6 +15,11 @@ on:
     paths-ignore:
       - '**.md'
 
+# Ayni dal icin yalnizca en son derleme calissin.
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 

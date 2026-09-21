@@ -132,7 +132,11 @@ function tableCard(ctx, children, kind, title) {
   const tbody = el('tbody');
   for (const task of tasks) {
     const tr = el('tr');
-    tr.append(el('td', { class: 'rowhead', text: `${task.icon || '⭐'} ${task.title}` }));
+    // Ayni adli beceriler (or. sabah/aksam dis fircalama) zaman dilimiyle ayrilir.
+    const label = kind === 'care' && task.cat
+      ? `${task.icon || '⭐'} ${task.title} (${task.cat})`
+      : `${task.icon || '⭐'} ${task.title}`;
+    tr.append(el('td', { class: 'rowhead', text: label }));
     for (let i = 0; i < 7; i++) {
       for (const child of children) {
         const td = el('td');

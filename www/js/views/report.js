@@ -175,7 +175,9 @@ function taskRows(weekKey, childId, kind) {
   if (!tasks.length) return '<tr><td colspan="2">Bu hafta için görev tanımlı değil.</td></tr>';
   return tasks.map((t) => {
     const n = store.taskWeeklyCount(weekKey, childId, kind, t.id);
-    return `<tr><td>${escapeHtml(t.icon || '⭐')} ${escapeHtml(t.title)}</td><td class="num">${n} / 7</td></tr>`;
+    // Sabah/aksam gibi ayni adli beceriler ogretmen icin ayirt edilebilsin.
+    const suffix = kind === 'care' && t.cat ? ` <span class="r-when">(${escapeHtml(t.cat)})</span>` : '';
+    return `<tr><td>${escapeHtml(t.icon || '⭐')} ${escapeHtml(t.title)}${suffix}</td><td class="num">${n} / 7</td></tr>`;
   }).join('');
 }
 
@@ -319,6 +321,7 @@ export function standaloneReportHtml(weekKey, selected) {
   .r-table th, .r-table td { border: 0.6pt solid #e2dae8; padding: 3.5pt 5pt; font-size: 9.5pt; text-align: left; }
   .r-table th { background: #faf7fc; font-size: 8.5pt; text-transform: uppercase; letter-spacing: .03em; color: #5f5570; }
   .r-table .num { text-align: center; width: 30mm; white-space: nowrap; }
+  .r-when { color: #6b6478; font-size: 8.5pt; }
 
   .r-note { border: 0.6pt solid #e2dae8; border-radius: 4pt; padding: 5pt 7pt; margin-top: 4pt; break-inside: avoid; }
   .r-note h4 { font-size: 9pt; color: #6b5f7d; margin-bottom: 2pt; }
