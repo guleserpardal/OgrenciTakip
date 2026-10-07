@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Uygulamanin pastel marka renkleri. Capacitor kutuphanesindeki
+         varsayilan renkleri gecersiz kilar. -->
+    <color name="colorPrimary">#FF78AD</color>
+    <color name="colorPrimaryDark">#F05A97</color>
+    <color name="colorAccent">#9A7CF6</color>
+
+    <!-- Sistem cubuklari uygulamanin ust/alt yuzeyleriyle ayni tonda olsun. -->
+    <color name="statusBarColor">#FFF8FB</color>
+    <color name="navigationBarColor">#FFFFFF</color>
+    <color name="splashBackground">#FFF8FB</color>
+</resources>

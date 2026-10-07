@@ -1,0 +1,24 @@
+{
+  "name": "evde-egitim-takip",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Evde Egitim Takip - haftalik odev, ozbakim, veli takibi ve ogretmen raporu (Android/Capacitor)",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/build.mjs --verify-only",
+    "sync": "npm run build && npx cap sync android",
+    "apk:debug": "npm run sync && cd android && ./gradlew assembleDebug",
+    "apk:release": "npm run sync && cd android && ./gradlew assembleRelease",
+    "test": "node test/app.test.mjs && node test/native.test.mjs && node test/legacy.test.mjs"
+  },
+  "dependencies": {
+    "@capacitor/app": "^8.0.1",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/preferences": "^8.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "playwright": "1.56.1"
+  }
+}
