@@ -1,0 +1,7 @@
+package com.elis.lila;
+import android.app.*;import android.os.*;import android.content.*;import android.provider.Settings;import android.net.Uri;import android.webkit.*;
+public class MainActivity extends Activity {
+ WebView web;
+ @Override public void onCreate(Bundle b){super.onCreate(b);web=new WebView(this);web.getSettings().setJavaScriptEnabled(true);web.getSettings().setDomStorageEnabled(true);web.addJavascriptInterface(new Object(){@JavascriptInterface public void sync(String json){getSharedPreferences("data",0).edit().putString("plan",json).apply();AlarmReceiver.scheduleAll(MainActivity.this);}},"NativeAlarm");setContentView(web);web.loadUrl("file:///android_asset/index.html");if(Build.VERSION.SDK_INT>=33&&checkSelfPermission("android.permission.POST_NOTIFICATIONS")!=getPackageManager().PERMISSION_GRANTED)requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"},100);if(Build.VERSION.SDK_INT>=31){AlarmManager am=getSystemService(AlarmManager.class);if(!am.canScheduleExactAlarms()){try{startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,Uri.parse("package:"+getPackageName())));}catch(Exception ignored){}}}}
+ @Override protected void onResume(){super.onResume();AlarmReceiver.scheduleAll(this);}
+}
